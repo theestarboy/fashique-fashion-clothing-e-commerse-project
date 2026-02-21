@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Fashique – Real‑Branded Mini Collection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* --- Base Variables --- */
+    :root {
+      --accent: #FF5A5F;
+      --accent2: #7C3AED;
+      --muted: #6B7280;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --text: #0f172a;
+      --border: #e6e9ee;
+    }
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --card: #0b1220;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #1e293b;
+    }
+    
+    /* --- Base Styles --- */
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+    h2 {
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+    
+    /* --- Header --- */
+    header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--card);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+    header .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; /* Allows wrapping on small screens */
+    }
+    .logo-area {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: conic-gradient(from 200deg, var(--accent), var(--accent2));
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .logo-text {
+      font-weight: 700;
+    }
+    .logo-subtext {
+      font-size:14px;
+      color:var(--muted);
+    }
+    .navlinks {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .navlinks a, .navlinks button {
+      text-decoration: none;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      position: relative;
+      padding: 8px;
+    }
+    .navlinks button .material-icons {
+      vertical-align: middle;
+    }
+    #shoesMenu {
+      display: none;
+      position: absolute;
+      background: var(--card);
+      padding: 8px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      top: 40px; /* Position below the button */
+    }
+    
+    /* --- Main Page Content --- */
+    main.container {
+      padding: 24px 14px 0 14px; /* Reduced top padding */
+      max-width: 1200px;
+      margin: auto;
+      min-height: 60vh; /* Keep footer down */
+    }
+    .hero-banner {
+      width: 100%;
+      height: 300px;
+      border-radius: 16px;
+      background: url('https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 800;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      margin-bottom: 24px;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search input {
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      width: 200px;
+      background: var(--card);
+      color: var(--text);
+    }
+    .btn, .btn-sm, .btn-primary {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border: none;
+    }
+    
+    /* --- Carousel --- */
+    .carousel {
+      margin-top: 24px;
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding-bottom: 8px;
+    }
+    .carousel img {
+      height: 160px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      width: 280px;
+      object-fit: cover;
+    }
+    
+    /* --- Product Grid --- */
+    .grid {
+      display: grid;
+      /* Responsive Grid: 2 columns on mobile, auto-fit on larger */
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: transform .2s;
+    }
+    .card:hover {
+      transform: scale(var(--hover-scale,1.03));
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #eee; /* Placeholder color if image is slow */
+    }
+    .price {
+      color: var(--accent);
+      font-weight: 800;
+      margin-top: 8px;
+    }
+    .card-buttons {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* --- Cart Drawer --- */
+    #cartBackdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 199;
+    }
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -400px; /* Start off-screen */
+      height: 100%;
+      width: 360px;
+      background: var(--card);
+      box-shadow: 0 0 30px rgba(0,0,0,0.25);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.3s ease-in-out;
+    }
+    .drawer.open {
+      right: 0; /* Slide in */
+    }
+    .drawer-content {
+      padding: 18px;
+      overflow-y: auto;
+      flex-grow: 1; /* Takes up available space */
+    }
+    .drawer-footer {
+      padding: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* --- NEW Cart Item Styles --- */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cart-item-info span {
+      font-size: 0.9em;
+      color: var(--muted);
+    }
+    .cart-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cart-item-controls button {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 4px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .cart-item-controls .remove-btn {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      padding: 0;
+      margin-left: 8px;
+    }
+    .cart-item-controls .remove-btn .material-icons {
+      font-size: 20px;
+    }
+    .cart-item-controls span {
+      font-weight: 600;
+      min-width: 20px;
+      text-align: center;
+    }
+    .cart-total {
+      font-weight:800;
+      display:flex;
+      justify-content:space-between;
+      padding-top: 10px;
+      font-size: 1.1em;
+    }
+    
+    /* --- Payment Page Specific Styles --- */
+    .payment-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .payment-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 24px;
+        border-radius: 12px;
+    }
+    .payment-card h3 {
+        margin-top: 0;
+        color: var(--accent2);
+    }
+    .payment-card .details {
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
+    .payment-card .details strong {
+        color: var(--text);
+    }
+    
+    /* --- Footer --- */
+    footer {
+      margin-top: 40px;
+      padding: 16px;
+      background: var(--card);
+      color: var(--muted);
+      text-align: center;
+    }
+    
+    /* --- Phone Friendly (Responsive) Styles --- */
+    @media(max-width: 900px) {
+      .hero-banner { height: 220px; font-size: 24px; }
+      .card img { height: 180px; }
+    }
+    @media(max-width: 768px) {
+      /* Stack header items */
+      header .container {
+        justify-content: center; /* Center items when stacked */
+        gap: 10px;
+      }
+      .navlinks {
+        justify-content: center; /* Center nav links */
+        border-top: 1px solid var(--border);
+        width: 100%;
+        padding-top: 10px;
+      }
+      .logo-area {
+        width: 100%;
+        justify-content: center;
+      }
+      .payment-options {
+        grid-template-columns: 1fr; /* Stack payment options on mobile */
+      }
+    }
+    @media(max-width: 480px) {
+      /* Make cart full-width on small phones */
+      .drawer {
+        width: 95%;
+        right: -100%; /* Adjust for percentage width */
+      }
+      .grid {
+        /* Enforce 2 columns */
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .card img {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cartBackdrop" onclick="toggleCart()"></div>
+
+<header>
+  <div class="container">
+    <div class="logo-area">
+      <div class="logo">F</div>
+      <div>
+        <div class="logo-text">Fashique</div>
+        <div class="logo-subtext">Dress in style, step in confidence</div>
+      </div>
+    </div>
+    
+    <div class="navlinks" id="shopNavLinks">
+      <a href="#menClothingGrid">Men Clothing</a>
+      <a href="#womenClothingGrid">Women Clothing</a>
+      <button onclick="toggleShoesMenu()">Shoes ▾</button>
+      <div id="shoesMenu">
+        <a href="#menShoesGrid">Men Shoes</a><br>
+        <a href="#womenShoesGrid">Women Shoes</a>
+      </div>
+      <a href="#about">About</a>
+      <a href="#feedback">Feedback</a>
+      <button onclick="toggleCart()"><span class="material-icons">shopping_cart</span> <span id="cartCount">0</span></button>
+      <button onclick="toggleTheme()"><span class="material-icons">dark_mode</span></button>
+    </div>
+    
+    <div class="navlinks" id="paymentNavLinks" style="display:none;">
+      <a href="#" onclick="showShopPage(true, '#about')">About</a>
+      <a href="#" onclick="showShopPage(true, '#feedback')">Feedback</a>
+      <a href="#" onclick="showShopPage()">Back to Shop</a>
+      <button onclick="toggleTheme()"><span class="material-icons">dark_mode</span></button>
+    </div>
+
+  </div>
+</header>
+
+<main class="container" id="shopMainContainer">
+  <div class="hero-banner">Fashique Fashion Hub — Kenya</div>
+
+  <div class="controls">
+    <div class="search">
+      <input id="searchInput" placeholder="Search products, e.g. 'jacket'">
+      <button class="btn-sm" onclick="applyFilters()">Search</button>
+    </div>
+    <button class="btn" onclick="resetFilters()">Reset</button>
+  </div>
+
+  <div class="carousel" id="carousel"></div>
+
+  <h2>Men's Clothing</h2>
+  <div id="menClothingGrid" class="grid"></div>
+
+  <h2>Women's Clothing</h2>
+  <div id="womenClothingGrid" class="grid"></div>
+
+  <h2>Men's Shoes</h2>
+  <div id="menShoesGrid" class="grid"></div>
+
+  <h2>Women's Shoes</h2>
+  <div id="womenShoesGrid" class="grid"></div>
+
+  <section id="about" style="margin-top:40px;">
+    <h2>About Fashique</h2>
+    <p>Fashique is Kenya’s curated online fashion store. We bring together quality clothing and shoes — stylish, aspirational, and accessible. Based in Nairobi, we deliver countrywide.</p>
+  </section>
+
+  <section id="feedback" style="margin-top:40px;">
+    <h2>Feedback</h2>
+    <textarea id="feedbackInput" placeholder="Your feedback..." style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border); background: var(--card); color: var(--text); min-height: 80px;"></textarea>
+    <button class="btn" onclick="submitFeedback()" style="margin-top: 8px;">Submit Feedback</button>
+  </section>
+</main>
+
+<main class="container" id="paymentMainContainer" style="display:none;">
+  <h2>Payment Options</h2>
+  <p>Please complete your payment using one of the methods below. Your order will be processed upon confirmation.</p>
+
+  <div class="payment-options">
+    <div class="payment-card">
+      <h3>1. Lipa Na M-Pesa (Buy Goods)</h3>
+      <div class="details">
+        <ol>
+          <li>Go to your M-Pesa Menu</li>
+          <li>Select <strong>Lipa Na M-Pesa</strong></li>
+          <li>Select <strong>Buy Goods and Services</strong></li>
+          <li>Enter Till Number: <strong>555123</strong></li>
+          <li>Enter the total amount for your order</li>
+          <li>Enter your M-Pesa PIN and confirm</li>
+          <li>You will receive a confirmation SMS.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="payment-card">
+      <h3>2. Bank Deposit</h3>
+      <div class="details">
+        <p>You can deposit the total amount into our bank account:</p>
+        <ul>
+          <li><strong>Bank Name:</strong> Equity Bank</li>
+          <li><strong>Account Name:</strong> Vincent Muthoni</li>
+          <li><strong>Account Number:</strong> 012345678910</li>
+          <li><strong>Branch:</strong> Kirinyaga Branch</li>
+        </ul>
+        <p>After depositing, please <strong>WhatsApp the deposit slip</strong> to +254745334743 to confirm your order.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px;">
+    <button class="btn" onclick="showShopPage()">&larr; Go Back to Shop</button>
+  </div>
+</main>
+
+<div id="cartDrawer" class="drawer">
+  <div class="drawer-content" id="cartContent">
+    <h2>Your Cart</h2>
+    <div style="color: var(--muted);">Cart is empty</div>
+  </div>
+  <div class="drawer-footer" id="cartFooter">
+    <button class="btn btn-primary" id="checkoutButton" style="display:none; text-align: center;" onclick="showPaymentPage()">
+      Proceed to Payment
+    </button>
+    <button class="btn" onclick="toggleCart()">Close Cart</button>
+  </div>
+</div>
+
+<footer>
+  © 2025 Fashique Kenya — Your style & look is our priority<br>
+  Contact: +254745334743 | muthonivincent15@gmail.com
+</footer>
+
+<script>
+// --- Theme toggle ---
+function toggleTheme(){
+  document.documentElement.setAttribute('data-theme',
+    document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+
+// --- Shoes menu toggle ---
+function toggleShoesMenu(){
+  const m = document.getElementById('shoesMenu');
+  m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+}
+
+// --- Page Navigation ---
+function showPaymentPage() {
+  // Hide shop content
+  document.getElementById('shopMainContainer').style.display = 'none';
+  // Show payment content
+  document.getElementById('paymentMainContainer').style.display = 'block';
+  
+  // Hide shop nav, show payment nav
+  document.getElementById('shopNavLinks').style.display = 'none';
+  document.getElementById('paymentNavLinks').style.display = 'flex';
+  
+  // Close the cart
+  toggleCart(true); // Pass 'true' to force-close
+  
+  // Scroll to top
+  window.scrollTo(0, 0);
+}
+
+function showShopPage(scrollToAnchor = false, anchorId = '') {
+  // Show shop content
+  document.getElementById('shopMainContainer').style.display = 'block';
+  // Hide payment content
+  document.getElementById('paymentMainContainer').style.display = 'none';
+
+  // Show shop nav, hide payment nav
+  document.getElementById('shopNavLinks').style.display = 'flex';
+  document.getElementById('paymentNavLinks').style.display = 'none';
+
+  // Scroll to top or anchor
+  if (scrollToAnchor && anchorId) {
+    // We use a small timeout to ensure the page is visible before scrolling
+    setTimeout(() => {
+        document.querySelector(anchorId).scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  } else {
+    window.scrollTo(0, 0);
+  }
+}
+
+
+// --- Data setup (UPDATED WITH ALL UPLOADED IMAGES) ---
+const menClothes = [
+  { id: 'mc1', title: 'Blue Denim Jacket', price: 4500, img: 'blue denim jacket.jpg' },
+  { id: 'mc2', title: 'Checked Flannel Shirt', price: 2800, img: 'checked flannel shirt.jpg' },
+  { id: 'mc3', title: 'Khaki Chinos', price: 3200, img: 'khaki chinos.jpg' },
+  { id: 'mc4', title: 'Graphic Print T-Shirt', price: 1500, img: 'graphic print t shirt.jpg' },
+  { id: 'mc5', title: 'Black Leather Jacket', price: 7000, img: 'black leather jacket.jpg' },
+  /* REMOVED: { id: 'mc6', title: 'Grey Hoodie', price: 3500, img: 'grey hoodie.jpg' }, */
+  { id: 'mc7', title: 'Slim Fit Suit', price: 12500, img: 'slim fit suit.jpg' }
+];
+const womenClothes = [
+  { id: 'wc1', title: 'Red Floral Dress', price: 3800, img: 'red floral dress.jpg' },
+  { id: 'wc2', title: 'High-Waist Jeans', price: 3500, img: 'high waist jeans.jpg' },
+  { id: 'wc3', title: 'White Linen Blouse', price: 2500, img: 'white linen blouse.jpg' },
+  { id: 'wc4', title: 'Beige Trench Coat', price: 6500, img: 'beige trent coat.jpg' },
+  { id: 'wc5', title: 'Satin Slip Skirt', price: 2900, img: 'satin slip skirt.jpeg' },
+  { id: 'wc6', title: 'Black Bodycon Dress', price: 4200, img: 'black bodycon dress.jpg' },
+  { id: 'wc7', title: 'Knitted Cardigan', price: 3300, img: 'knitted cardigan.jpeg' }
+];
+const menShoes = [
+  { id: 'ms1', title: 'Adidas Superstar', price: 8500, img: 'https://images.pexels.com/photos/1407354/pexels-photo-1407354.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'ms2', title: 'Nike Air Force 1 \'07', price: 12000, img: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'ms3', title: 'Puma Suede Classic', price: 9000, img: 'https://images.pexels.com/photos/267202/pexels-photo-267202.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'ms4', title: 'Brown Leather Boots', price: 8000, img: 'https://images.pexels.com/photos/1503009/pexels-photo-1503009.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'ms5', title: 'Vans Old Skool', price: 7000, img: 'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'ms6', title: 'Leather Loafers', price: 6200, img: 'leather loafers.jpeg' }
+];
+const womenShoes = [
+  { id: 'ws1', title: 'Adidas Stan Smith', price: 8000, img: 'adidas stan smith.jpeg' },
+  { id: 'ws2', title: 'Red Stiletto Heels', price: 11000, img: 'https://images.pexels.com/photos/1445696/pexels-photo-1445696.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'ws3', title: 'Classic White Sneakers', price: 9000, img: 'classic white sneakers.jpeg' },
+  { id: 'ws4', title: 'Black Ankle Boots', price: 8500, img: 'black ankle boots.jpeg' },
+  { id: 'ws5', title: 'Vans Slip-On', price: 7500, img: 'https://images.pexels.com/photos/1478442/pexels-photo-1478442.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 'ws6', title: 'Flat Sandals', price: 4500, img: 'flat sandal.jpeg' }
+];
+
+const PRODUCTS = [...menClothes, ...womenClothes, ...menShoes, ...womenShoes];
+
+// --- Cart ---
+let CART = [];
+
+// NEW: Increment item in cart
+function incrementItem(id) {
+    const item = CART.find(x => x.id === id);
+    if (item) {
+        item.qty++;
+        renderCart();
+        updateCartCount();
+    }
+}
+
+// NEW: Decrement item in cart
+function decrementItem(id) {
+    const item = CART.find(x => x.id === id);
+    if (!item) return; 
+
+    if (item.qty > 1) {
+        item.qty--;
+    } else {
+        // Remove it entirely if qty is 1
+        CART = CART.filter(x => x.id !== id);
+    }
+    renderCart();
+    updateCartCount();
+}
+
+// NEW: Remove item from cart
+function removeItem(id) {
+    CART = CART.filter(x => x.id !== id);
+    renderCart();
+    updateCartCount();
+}
+
+function addToCart(id){
+  const p = PRODUCTS.find(x => x.id === id);
+  const ex = CART.find(x => x.id === id);
+  if(ex) {
+    ex.qty += 1;
+  } else {
+    CART.push({ ...p, qty: 1 });
+  }
+  updateCartCount();
+  renderCart();
+  // Open cart drawer when item is added
+  const d = document.getElementById('cartDrawer');
+  if (!d.classList.contains('open')) {
+    toggleCart();
+  }
+}
+
+function updateCartCount(){
+  const cnt = CART.reduce((sum, it) => sum + it.qty, 0);
+  document.getElementById('cartCount').innerText = cnt;
+}
+
+// UPDATED: renderCart now includes +, -, and remove buttons
+function renderCart(){
+  const d = document.getElementById('cartContent');
+  const checkoutBtn = document.getElementById('checkoutButton');
+  
+  if(CART.length === 0){
+    d.innerHTML = '<h2>Your Cart</h2><div style="color: var(--muted);">Cart is empty</div>';
+    checkoutBtn.style.display = 'none'; // Hide checkout if cart empty
+    return;
+  }
+  
+  d.innerHTML = '<h2>Your Cart</h2>';
+  let total = 0;
+  CART.forEach(item => {
+    total += item.price * item.qty;
+    // New cart item structure
+    d.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <b>${item.title}</b>
+          <span>KES ${item.price.toLocaleString()}</span>
+        </div>
+        <div class="cart-item-controls">
+          <button onclick="decrementItem('${item.id}')">-</button>
+          <span>${item.qty}</span>
+          <button onclick="incrementItem('${item.id}')">+</button>
+          <button class="remove-btn" onclick="removeItem('${item.id}')">
+            <span class="material-icons">delete</span>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  d.innerHTML += `<div class="cart-total">Total:<span>KES ${ total.toLocaleString() }</span></div>`;
+  checkoutBtn.style.display = 'block'; // Show checkout button
+}
+
+function toggleCart(forceClose = false){
+  const d = document.getElementById('cartDrawer');
+  const backdrop = document.getElementById('cartBackdrop');
+  const isOpen = d.classList.contains('open');
+
+  if (forceClose) {
+    // Force the cart to close
+    d.classList.remove('open');
+    backdrop.style.display = 'none';
+  } else if (isOpen) {
+    // Close the cart
+    d.classList.remove('open');
+    backdrop.style.display = 'none';
+  } else {
+    // Open the cart
+    d.classList.add('open');
+    backdrop.style.display = 'block';
+    renderCart(); // Re-render cart every time it's opened
+  }
+}
+
+// --- Render products in grids ---
+function renderGrid(containerId, items){
+  const grid = document.getElementById(containerId);
+  grid.innerHTML = '';
+  if (items.length === 0) {
+    grid.innerHTML = '<div style="color: var(--muted); grid-column: 1 / -1;">No products found.</div>';
+    return;
+  }
+  items.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${p.img}" alt="${p.title}" loading="lazy">
+      <div style="font-weight:700;margin-top:8px;">${p.title}</div>
+      <div class="price">KES ${p.price.toLocaleString()}</div>
+      <div class="card-buttons"><button class="btn" onclick="addToCart('${p.id}')">Add to Cart</button></div>`;
+    grid.appendChild(card);
+  });
+}
+
+// --- Carousel ---
+function populateCarousel(){
+  const c = document.getElementById('carousel');
+  c.innerHTML = '';
+  // Get 6 random items for variety
+  const featured = [...PRODUCTS].sort(() => 0.5 - Math.random()).slice(0, 6);
+  featured.forEach(p => {
+    const img = document.createElement('img');
+    img.src = p.img;
+    img.alt = p.title;
+    c.appendChild(img);
+  });
+}
+
+// --- Filter / Search ---
+function applyFilters(){
+  const q = (document.getElementById('searchInput').value || '').toLowerCase();
+  const filtered = PRODUCTS.filter(p => p.title.toLowerCase().includes(q));
+  renderGrid('menClothingGrid', filtered.filter(p => p.id.startsWith('mc')));
+  renderGrid('womenClothingGrid', filtered.filter(p => p.id.startsWith('wc')));
+  renderGrid('menShoesGrid', filtered.filter(p => p.id.startsWith('ms')));
+  renderGrid('womenShoesGrid', filtered.filter(p => p.id.startsWith('ws')));
+}
+
+function resetFilters(){
+  document.getElementById('searchInput').value = '';
+  renderAll();
+}
+
+// --- Feedback ---
+function submitFeedback(){
+  const t = document.getElementById('feedbackInput').value.trim();
+  if(t === '') { alert('Please write something.'); return; }
+  alert('Thank you for your feedback!');
+  document.getElementById('feedbackInput').value = '';
+}
+
+// --- Initialize ---
+function renderAll(){
+  renderGrid('menClothingGrid', menClothes);
+  renderGrid('womenClothingGrid', womenClothes);
+  renderGrid('menShoesGrid', menShoes);
+  renderGrid('womenShoesGrid', womenShoes);
+  populateCarousel();
+  updateCartCount();
+}
+
+// Run all render functions on page load
+document.addEventListener('DOMContentLoaded', renderAll);
+
+</script>
+</body>
+</html>
